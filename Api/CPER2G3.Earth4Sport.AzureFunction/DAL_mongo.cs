@@ -67,12 +67,11 @@ namespace CPER2G3.Earth4Sport.AzureFunction {
             }
             try {
                 await collection.InsertOneAsync(activity);
-                return new OkObjectResult("Inserimento avvenuto");
+                return new OkObjectResult("Inserimento avvenuto".ToJson());
             }
             catch (Exception) {
                 return new BadRequestObjectResult("Errore");
             }
-
         }
     }
 }

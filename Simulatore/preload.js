@@ -1,5 +1,7 @@
 const { contextBridge, ipcRenderer } = require('electron')
 
-contextBridge.exposeInMainWorld('close', {
-  close: () => ipcRenderer.invoke('close'),
+contextBridge.exposeInMainWorld('electronAPI', {
+  startSwimming: () => ipcRenderer.send('startSwimming'),
+  stopSwimming: () => ipcRenderer.send('stopSwimming'),
+  closeWindow: () => ipcRenderer.send('closeWindow')
 })

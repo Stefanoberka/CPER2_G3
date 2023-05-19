@@ -1,7 +1,7 @@
-
-docker-compose file per mongodb:
+Con docker-compose:
 ```yaml
-# Use root/example as user/password credentials
+# Impostare username e password a scelta, devono essere uguali in mongo e mongo-express per poter usare l'interfaccia web
+# ME_CONFIG_MONGODB_URL ha il formato mongodb://<username>:<password>@mongo:<porta> ed è anche la connection string
 version: '3.1'
 
 services:

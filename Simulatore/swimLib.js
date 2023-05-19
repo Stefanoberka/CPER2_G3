@@ -2,11 +2,11 @@ const uuid = require('uuid').v4;
 
 const poolLength = process.env.POOL_LENGTH ?? 200;
 const interval = process.env.INTERVAL ?? 10;
-const sessionUUID = uuid();
+const url = process.env.API_URL
 
 class Data {
     constructor() {
-        this.sessionUUID = sessionUUID;
+        this.sessionUUID = uuid();
         this.pools = 0;
         this.distance = 0;
         this.bpm = randomNumberBetween(80, 120);
@@ -87,34 +87,31 @@ class Data {
 
 async function postJSON(data) {
     try {
-      const response = await fetch("http://127.0.0.1:7095/api/post_device_data", {
-        method: "POST", // or 'PUT'
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-  
-      const result = await response.json();
-      console.log("Success:", result);
+        const response = await fetch(url, {
+            method: "POST", // or 'PUT'
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+        console.log("Success:", result);
     } catch (error) {
-      console.error("Error:", error);
+        console.error("Error:", error);
     }
-  }
-  
+}
 
-  
-
-// MAIN
-console.log('Activities for clock:', clockID)
-const swim = function () {
+const swim = function (clock_id) {
     let data = new Data();
     console.log(data)
-    setInterval( async function() {
+    postJSON(data)
+    const clear = setInterval(async function () {
         data.update()
         postJSON(data);
         console.log(data)
     }, interval * 1000)
+    return clear
 }
 
 function randomNumberBetween(min, max) {
