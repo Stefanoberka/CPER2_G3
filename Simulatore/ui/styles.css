@@ -99,6 +99,7 @@ body {
 /* Button 4 */
 #startstop .knobs:before,
 #startstop .knobs:after {
+  border-radius: 5px;
   position: absolute;
   top: 4px;
   left: 4px;
