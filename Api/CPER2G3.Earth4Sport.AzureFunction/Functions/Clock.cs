@@ -7,10 +7,6 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System.Text.Json;
-using MongoDB.Driver;
-using MongoDB.Bson;
-using CPER2G3.Earth4Sport.API.Models;
 using System.Net;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using CPER2G3.Earth4Sport.AzureFunction.Models;
@@ -66,13 +62,14 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
 
         [FunctionName("get_session_data")]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
+        [QueryStringParameter("s_id", "", DataType = typeof(string))]
         public async Task<IActionResult> GetClockSession(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get")]
             HttpRequest req,
             ILogger log
             ) {
-            string uuid = req.Query["uuid"];
-            return await _dal.getSessionActivities(uuid);
+            string id = req.Query["s_id"];
+            return await _dal.getSessionActivities(id);
         }
     }
 }

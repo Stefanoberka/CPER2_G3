@@ -1,17 +1,11 @@
-﻿using CPER2G3.Earth4Sport.API.Models;
-using CPER2G3.Earth4Sport.AzureFunction.Models;
+﻿using CPER2G3.Earth4Sport.AzureFunction.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyModel.Resolution;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CPER2G3.Earth4Sport.AzureFunction {

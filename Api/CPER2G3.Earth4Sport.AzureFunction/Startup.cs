@@ -3,7 +3,6 @@ using AzureFunctions.Extensions.Swashbuckle.Settings;
 using CPER2G3.Earth4Sport.AzureFunction;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Azure.WebJobs.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;

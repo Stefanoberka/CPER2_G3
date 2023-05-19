@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CPER2G3.Earth4Sport.API.Models
+namespace CPER2G3.Earth4Sport.AzureFunction.Models
 {
     public class ClockData
     {
