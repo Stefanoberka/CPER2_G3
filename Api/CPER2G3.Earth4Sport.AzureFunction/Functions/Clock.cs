@@ -19,9 +19,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
 {
     public class Clock
     {
-
         private IDAL _dal { get; set; }
-
         public Clock(IDAL dal) {
             _dal = dal;
         }
@@ -29,45 +27,28 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
         [FunctionName("get_device_data")]
         [ProducesResponseType(typeof(ClockData), (int)HttpStatusCode.OK)]
         [QueryStringParameter("uuid", "", DataType = typeof(string))]
-        public async Task<IActionResult> Run(
+        public async Task<IActionResult> GetClockData(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get")]
             HttpRequest req,
             ILogger log
             ){
             log.LogInformation("C# HTTP trigger function processed a request.");
-
             string uuid = req.Query["uuid"];
-
             return await _dal.getClockById(uuid);
-           
-            //// la password � generata con un generatore online fyi, i dati sono provvisori a fini di test
-            //string connstr = "mongodb://cper2g3:8z5!H7jAcA!C@localhost:27017";
-            //if (connstr == null)
-            //{
-            //    Console.WriteLine("Connection string not set");
-            //    Environment.Exit(0);
-            //}
-
-            //var client = new MongoClient(connstr);
-
-            
         }
 
         [FunctionName("post_device_data")]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Pippo(
+        public async Task<IActionResult> PostClockActivity(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post")]
             HttpRequest req,
             ILogger log
             ) {
-
-
             string requestBody = String.Empty;
             using (StreamReader streamReader = new StreamReader(req.Body)) {
                 requestBody = await streamReader.ReadToEndAsync();
             }
             dynamic data = JsonConvert.DeserializeObject(requestBody);
-
             Console.WriteLine(data.timestamp);
             ClockActivityData clockData = new ClockActivityData() {
                 SessionUUID = data.sessionUUID,
@@ -80,9 +61,18 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
                 },
                 TimeStamp = data.timestamp
             };
-
-
             return await _dal.postClock(clockData);
+        }
+
+        [FunctionName("get_session_data")]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetClockSession(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get")]
+            HttpRequest req,
+            ILogger log
+            ) {
+            string uuid = req.Query["uuid"];
+            return await _dal.getSessionActivities(uuid);
         }
     }
 }

@@ -2,11 +2,14 @@
 using CPER2G3.Earth4Sport.AzureFunction.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyModel.Resolution;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,7 +41,21 @@ namespace CPER2G3.Earth4Sport.AzureFunction {
                 });
             }
             catch (Exception) {
-                return new NotFoundObjectResult("The id does not exist.");
+                return new NotFoundObjectResult("L'id non esiste");
+            }
+        }
+
+        public async Task<ObjectResult> getSessionActivities(string uuid) {
+            var collection = dbSessions.GetCollection<ClockActivityData>(uuid);
+            if(collection == null) {
+                return new NotFoundObjectResult("La sessione non esiste");
+            }
+            try {
+                var sessionActivitiesData = collection.AsQueryable<ClockActivityData>();
+                return new ObjectResult(sessionActivitiesData);
+            }
+            catch (Exception) {
+                return new ObjectResult("Errore");
             }
         }
 
@@ -53,7 +70,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction {
                 return new OkObjectResult("Inserimento avvenuto");
             }
             catch (Exception) {
-                return new BadRequestObjectResult("Error");
+                return new BadRequestObjectResult("Errore");
             }
 
         }
