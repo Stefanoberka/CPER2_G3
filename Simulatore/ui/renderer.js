@@ -1,13 +1,16 @@
-const startSwimmingBtn = document.getElementById('startSwimming')
-startSwimmingBtn.addEventListener('click', () => {
-  window.electronAPI.startSwimming()
-});
-
-const stopSwimmingBtn = document.getElementById('stopSwimming')
-stopSwimmingBtn.addEventListener('click', () => {
-  window.electronAPI.stopSwimming()
-});
-
 document.getElementById('closeBtn').addEventListener('click', () => {
   window.electronAPI.closeWindow()
+})
+
+let toggle = document.getElementById('toggle')
+
+toggle.addEventListener('click', () => {
+  if (toggle.checked) {
+    console.log('start')
+    window.electronAPI.startSwimming()
+  }
+  else {
+    console.log('stahp')
+    window.electronAPI.stopSwimming()
+  }
 })

@@ -9,12 +9,22 @@
 </head>
 
 <body>
-    <div>
-        <button id="startSwimming" type="button">Start</button>
-        <button id="stopSwimming" type="button">Stop</button>
-        <img src="arm.png" class="draggable-area" />
-    </div>
     <button id="closeBtn" type="button" class="button-close">X</button>
+
+    <div class="draggable-area">
+        <div class="watch">
+            <div>
+                <div class="toggle-button-cover">
+                    <div class="button r" id="startstop">
+                        <input type="checkbox" class="checkbox" value="asd" id="toggle" />
+                        <div class="knobs"></div>
+                        <div class="layer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="./renderer.js"></script>
 </body>
 

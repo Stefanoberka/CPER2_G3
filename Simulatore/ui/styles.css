@@ -1,39 +1,142 @@
 .draggable-area {
-    -webkit-app-region: drag;
+  -webkit-app-region: drag;
 }
 
 body {
-    /* display: flex;
-    flex-direction: column;
-    align-items: right;
-    justify-content: center; */
+  background-color: #00003355;
+  display: flex;
+  flex-direction: column;
+  /* align-items: flex-end; */
+  justify-content: center;
 }
+
 .button-close {
-    background: linear-gradient(to bottom right, #EF4765, #FF9A5A);
-    border: 0;
-    border-radius: 12px;
-    color: #FFFFFF;
-    cursor: pointer;
-    display: inline-block;
-    font-family: -apple-system,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 2.5;
-    outline: transparent;
-    padding: 0 1rem;
-    text-align: center;
-    text-decoration: none;
-    transition: box-shadow .2s ease-in-out;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-    white-space: nowrap;
-  }
-  
-  .button-close:not([disabled]):focus {
-    box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
-  }
-  
-  .button-close:not([disabled]):hover {
-    box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
-  }
+  height: 30px;
+  width: 30px;
+  background: #aa0000;
+  border: 0;
+  color: #FFFFFF;
+  cursor: pointer;
+  outline: transparent;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+
+.watch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  width: 300px;
+  border-radius: 100%;
+  background-color: #000033;
+}
+
+.watch>div {
+  height: 270px;
+  width: 270px;
+  border-radius: 100%;
+  background-color: #000022;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-button-cover {
+  display: table-cell;
+  position: relative;
+  width: 200px;
+  height: 140px;
+  box-sizing: border-box;
+}
+
+.knobs,
+.layer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.button {
+  -webkit-app-region: no-drag;
+  position: relative;
+  top: 50%;
+  width: 74px;
+  height: 36px;
+  margin: -20px auto 0 auto;
+  overflow: hidden;
+}
+
+
+.checkbox {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.knobs {
+  z-index: 2;
+}
+
+.layer {
+  width: 100%;
+  background-color: #ebf7fc00;
+  transition: 0.3s ease all;
+  z-index: 1;
+}
+
+/* Button 4 */
+#startstop .knobs:before,
+#startstop .knobs:after {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 60px;
+  height: 10px;
+  color: #fff;
+  font-size: 10px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 1;
+  padding: 9px 4px;
+  background-color: #f44336;
+  transition: 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15) all;
+}
+
+#startstop .knobs:before {
+  content: "Stopped.";
+}
+
+#startstop .knobs:after {
+  content: "Started...";
+}
+
+#startstop .knobs:after {
+  top: -28px;
+  right: 4px;
+  left: auto;
+  background-color: #03a9f4;
+}
+
+#startstop .checkbox:checked+.knobs:before {
+  top: -28px;
+}
+
+#startstop .checkbox:checked+.knobs:after {
+  top: 4px;
+}
+/* 
+#startstop .checkbox:checked~.layer {
+  background-color: #fcebeb;
+} */

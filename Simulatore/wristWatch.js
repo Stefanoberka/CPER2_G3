@@ -3,7 +3,7 @@ require('dotenv').config()
 
 // costanti:
 const clockID = process.env.CLOCK_ID ?? 'placeholder-id (should be set in .env)';
-const { Data, swim } = require('./swimLib')
+const { swim } = require('./swimLib')
 
 // MAIN
 console.log('Activities for clock:', clockID)
@@ -13,19 +13,19 @@ let swimInstance
 
 function createWindow() {
     const window = new BrowserWindow({
-        width: 800,
-        height: 900,
+        width: 320,
+        height: 350,
         frame: false,
         transparent: true,
         webPreferences: {
             nodeIntegration: true,
-            // enableRemoteModule: true,
             preload: (path.join(__dirname, 'preload.js'))
         },
     })
 
     ipcMain.on('startSwimming', (event, args) => {
         console.log('start')
+        clearInterval(swimInstance)
         swimInstance = swim(clockID)
     })
     ipcMain.on('stopSwimming', (event, args) => {
@@ -38,7 +38,6 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
-    // ipcMain.on('start-swimming', handleStartSwimming)
     createWindow()
 
     app.on('activate', function () {

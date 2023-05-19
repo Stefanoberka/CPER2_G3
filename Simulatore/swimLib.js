@@ -15,7 +15,6 @@ class Data {
             longitude: (Math.random() * 360) - 180
         };
         this.timestamp = new Date();
-        this.time_active = 0;
     }
 
     update() {
@@ -75,12 +74,8 @@ class Data {
         this.distance += calcDistance(prevLat, prevLon, newLat, newLon)
         this.pools = Math.floor(this.distance / poolLength)
 
-        // tengo traccia del tempo percorso, giusto per avere un'idea della velocità a cui sta nuotando sta cosa:
-        let tmp_timestamp = new Date()
-        this.time_active += (tmp_timestamp.valueOf() - this.timestamp.valueOf()) / 1000;
-
         // aggiorno il timestamp:
-        this.timestamp = tmp_timestamp;
+        this.timestamp = new Date();
     };
 };
 
