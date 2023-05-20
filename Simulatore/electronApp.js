@@ -3,13 +3,13 @@ require('dotenv').config()
 
 // costanti:
 const clockID = process.env.CLOCK_ID ?? 'placeholder-id (should be set in .env)';
-const { swim } = require('./swimLib')
+const { swim } = require('./lib/swimLib')
 
 // MAIN
 console.log('Activities for clock:', clockID)
 const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path');
-let swimInstance
+let swimInstance;
 
 function createWindow() {
     const window = new BrowserWindow({
@@ -19,35 +19,36 @@ function createWindow() {
         transparent: true,
         webPreferences: {
             nodeIntegration: true,
-            preload: (path.join(__dirname, 'preload.js'))
+            preload: (path.join(__dirname, 'lib/preload.js'))
         },
-    })
+    });
 
     ipcMain.on('startSwimming', (event, args) => {
-        console.log('start')
+        console.log('Started swimming...')
         clearInterval(swimInstance)
         swimInstance = swim(clockID)
-    })
+    });
     ipcMain.on('stopSwimming', (event, args) => {
-        console.log('stop')
+        console.log('Stopped.')
         clearInterval(swimInstance)
-    })
-    ipcMain.on('closeWindow', (event, args) => window.close())
+    });
+    ipcMain.on('closeWindow', (event, args) => window.close());
 
-    window.loadFile(path.join(__dirname, 'ui/arm.html'))
-}
+    window.loadFile(path.join(__dirname, 'ui/arm.html'));
+};
 
 app.whenReady().then(() => {
-    createWindow()
+    createWindow();
 
     app.on('activate', function () {
-        if (BrowserWindow.getAllWindows().length === 0) createWindow()
-    })
-})
+        if (BrowserWindow.getAllWindows().length === 0) createWindow();
+    });
+});
 
 app.on('window-all-closed', function () {
     if (process.platform !== 'darwin') {
-        app.quit()
-        process.exit()
+        console.log('Exiting...');
+        app.quit();
+        process.exit();
     }
-})
+});

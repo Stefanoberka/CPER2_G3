@@ -97,10 +97,10 @@ async function postJSON(data) {
     }
 }
 
-const swim = function (clock_id) {
+function swim(clock_id) {
     let data = new Data();
-    console.log(data)
     postJSON(data)
+    console.log(data)
     const clear = setInterval(async function () {
         data.update()
         postJSON(data);
@@ -135,6 +135,5 @@ function calcDistance(lat1, lon1, lat2, lon2) {
 }
 
 module.exports = {
-    Data,
     swim
 }
