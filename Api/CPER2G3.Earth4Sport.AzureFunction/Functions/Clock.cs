@@ -1,15 +1,15 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
+using AzureFunctions.Extensions.Swashbuckle.Attribute;
+using CPER2G3.Earth4Sport.AzureFunction.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System;
+using System.IO;
 using System.Net;
-using AzureFunctions.Extensions.Swashbuckle.Attribute;
-using CPER2G3.Earth4Sport.AzureFunction.Models;
+using System.Threading.Tasks;
 
 namespace CPER2G3.Earth4Sport.AzureFunction.Functions
 {
@@ -21,7 +21,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
         }
 
         [FunctionName("get_device_data")]
-        [ProducesResponseType(typeof(ClockData), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(DeviceData), (int)HttpStatusCode.OK)]
         [QueryStringParameter("uuid", "", DataType = typeof(string))]
         public async Task<IActionResult> GetClockData(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get")]
@@ -46,7 +46,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
             }
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             Console.WriteLine(data.timestamp);
-            ClockActivityData clockData = new ClockActivityData() {
+            SessionData clockData = new SessionData() {
                 SessionUUID = data.sessionUUID,
                 Bpm = data.bpm,
                 Distance = data.distance,

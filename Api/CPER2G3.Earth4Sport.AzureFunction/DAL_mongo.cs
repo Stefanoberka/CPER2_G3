@@ -28,7 +28,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction {
             var filter = Builders<BsonDocument>.Filter.Eq("_id", uuid);
             try {
                 var document = collection.Find(filter).First();
-                return new OkObjectResult(new ClockData() {
+                return new OkObjectResult(new DeviceData() {
                     uuid = document["_id"].AsString,
                     n_batch = document["n_batch"].AsInt32,
                     data_batch = DateTime.Parse(document["data_batch"].AsString)
@@ -40,12 +40,12 @@ namespace CPER2G3.Earth4Sport.AzureFunction {
         }
 
         public async Task<ObjectResult> getSessionActivities(string uuid) {
-            var collection = dbSessions.GetCollection<ClockActivityData>(uuid);
+            var collection = dbSessions.GetCollection<SessionData>(uuid);
             if(collection == null) {
                 return new NotFoundObjectResult("La sessione non esiste");
             }
             try {
-                var sessionActivitiesData = collection.AsQueryable<ClockActivityData>();
+                var sessionActivitiesData = collection.AsQueryable<SessionData>();
                 return new ObjectResult(sessionActivitiesData);
             }
             catch (Exception) {
@@ -53,11 +53,11 @@ namespace CPER2G3.Earth4Sport.AzureFunction {
             }
         }
 
-        public async Task<ObjectResult> postClock(ClockActivityData activity) {
-            var collection = dbSessions.GetCollection<ClockActivityData>(activity.SessionUUID);
+        public async Task<ObjectResult> postClock(SessionData activity) {
+            var collection = dbSessions.GetCollection<SessionData>(activity.SessionUUID);
             if (collection == null) {
                 dbProvisioning.CreateCollection(activity.SessionUUID);
-                collection = dbSessions.GetCollection<ClockActivityData>(activity.SessionUUID);
+                collection = dbSessions.GetCollection<SessionData>(activity.SessionUUID);
             }
             try {
                 await collection.InsertOneAsync(activity);
