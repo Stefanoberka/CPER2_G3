@@ -13,14 +13,15 @@ let swimInstance;
 
 function createWindow() {
     const window = new BrowserWindow({
-        width: 320,
-        height: 350,
+        width: 600,
+        height: 420,
         frame: false,
         transparent: true,
+        resizable: false,
         webPreferences: {
             nodeIntegration: true,
             preload: (path.join(__dirname, 'lib/preload.js'))
-        },
+        }
     });
 
     ipcMain.on('startSwimming', (event, args) => {

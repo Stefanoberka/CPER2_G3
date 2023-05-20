@@ -11,20 +11,34 @@
 <body>
     <button id="closeBtn" type="button" class="button-close">X</button>
 
-    <div class="draggable-area">
-        <div class="watch">
-            <div>
-                <div class="toggle-button-cover">
-                    <div class="button r" id="startstop">
-                        <input type="checkbox" class="checkbox" value="asd" id="toggle" />
-                        <div class="knobs"></div>
-                        <div class="layer"></div>
+    <div class="gradient">
+        <div class="background2 draggable-area">
+            <div class="wrist">
+                <div class="strap">
+                    <div class="watchface">
+                        <div class="glass">
+                            <p id="off">Stopped.</p>
+                            <p id="on">Swimming...</p>
+                            <label class="switch">
+                                <input type="checkbox" id="toggle" onclick="">
+                                <div class="slider round"></div>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <div class="palm">
+                <div class="f"></div>
+                <div class="f"></div>
+                <div class="f"></div>
+                <div class="f"></div>
+            </div>
+        </div>
+        <div class="thumb">
+            <div class="line"></div>
         </div>
     </div>
-
     <script src="./renderer.js"></script>
 </body>
 
