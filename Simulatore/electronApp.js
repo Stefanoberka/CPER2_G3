@@ -34,6 +34,7 @@ function createWindow() {
         clearInterval(swimInstance)
     });
     ipcMain.on('closeWindow', (event, args) => window.close());
+    ipcMain.on('minimizeWindow', (event, args) => window.minimize());
 
     window.loadFile(path.join(__dirname, 'ui/arm.html'));
 };

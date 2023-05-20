@@ -6,15 +6,19 @@ body {
     align-items: flex-end;
 }
 
+.row {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
 
 .draggable-area {
     -webkit-app-region: drag;
 }
 
-.button-close {
+.button{
     height: 30px;
     width: 30px;
-    background: #aa0000;
     border: 0;
     border-radius: 5px;
     margin-bottom: 5px;
@@ -27,6 +31,14 @@ body {
     -webkit-user-select: none;
     touch-action: manipulation;
     white-space: nowrap;
+
+}
+.close {
+    background: #aa0000;
+}
+
+.min {
+    background: #0000aa;
 }
 
 .background2 {

@@ -1,6 +1,9 @@
 document.getElementById('closeBtn').addEventListener('click', () => {
   window.electronAPI.closeWindow()
 })
+document.getElementById('minBtn').addEventListener('click', () => {
+  window.electronAPI.minWindow()
+})
 
 let toggle = document.getElementById('toggle')
 let on = document.getElementById("on");
