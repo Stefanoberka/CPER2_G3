@@ -22,6 +22,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction {
             dbSessions = client.GetDatabase("sessions");
         }
 
+        #region Provisioning
         public async Task<ObjectResult> getClockById(string uuid) {
             var collection = dbProvisioning.GetCollection<BsonDocument>("devices");
 
@@ -38,26 +39,33 @@ namespace CPER2G3.Earth4Sport.AzureFunction {
                 return new NotFoundObjectResult("L'id non esiste");
             }
         }
+        #endregion
 
-        public async Task<ObjectResult> getSessionActivities(string uuid) {
-            var collection = dbSessions.GetCollection<SessionData>(uuid);
-            if(collection == null) {
-                return new NotFoundObjectResult("La sessione non esiste");
+        #region ClockSessions
+        public async Task<ObjectResult> getSessionActivities(string sessionUuid, string clockUuid) {
+
+
+            var collection = dbSessions.GetCollection<SessionData>(clockUuid);
+            if (collection == null) {
+                return new NotFoundObjectResult("L'orologio non esiste");
             }
             try {
-                var sessionActivitiesData = collection.AsQueryable<SessionData>();
-                return new ObjectResult(sessionActivitiesData);
+                var sessionCollection = collection.Find<SessionData>(s => s.SessionUUID == sessionUuid);
+                if(sessionCollection == null) {
+                    return new NotFoundObjectResult("La sessione non esiste");
+                }
+                return new ObjectResult(sessionCollection);
             }
             catch (Exception) {
                 return new ObjectResult("Errore");
             }
         }
 
-        public async Task<ObjectResult> postClock(SessionData activity) {
-            var collection = dbSessions.GetCollection<SessionData>(activity.SessionUUID);
+        public async Task<ObjectResult> postClock(SessionData activity, string clockUuid) {
+            var collection = dbSessions.GetCollection<SessionData>(clockUuid);
             if (collection == null) {
-                dbProvisioning.CreateCollection(activity.SessionUUID);
-                collection = dbSessions.GetCollection<SessionData>(activity.SessionUUID);
+                dbProvisioning.CreateCollection(clockUuid);
+                collection = dbSessions.GetCollection<SessionData>(clockUuid);
             }
             try {
                 await collection.InsertOneAsync(activity);
@@ -67,5 +75,6 @@ namespace CPER2G3.Earth4Sport.AzureFunction {
                 return new BadRequestObjectResult("Errore");
             }
         }
+        #endregion
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
@@ -36,8 +37,9 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
         [FunctionName("post_device_data")]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> PostClockActivity(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post")]
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "post_device_data/{clock_id}")]
             HttpRequest req,
+            string clock_id,
             ILogger log
             ) {
             string requestBody = String.Empty;
@@ -57,19 +59,22 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
                 },
                 TimeStamp = data.timestamp
             };
-            return await _dal.postClock(clockData);
+            //string c_id = req.Query["clock_id"];
+            return await _dal.postClock(clockData, clock_id);
         }
 
         [FunctionName("get_session_data")]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
-        [QueryStringParameter("s_id", "", DataType = typeof(string))]
+        [ProducesResponseType(typeof(List<SessionData>), (int)HttpStatusCode.OK)]
+        [QueryStringParameter("session_id", "", DataType = typeof(string))]
+        [QueryStringParameter("clock_id", "", DataType = typeof(string))]
         public async Task<IActionResult> GetClockSession(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get")]
             HttpRequest req,
             ILogger log
             ) {
-            string id = req.Query["s_id"];
-            return await _dal.getSessionActivities(id);
+            string s_id = req.Query["session_id"];
+            string c_id = req.Query["clock_id"];
+            return await _dal.getSessionActivities(s_id, c_id);
         }
     }
 }
