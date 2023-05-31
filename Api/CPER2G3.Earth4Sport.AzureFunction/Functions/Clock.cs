@@ -64,6 +64,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
         }
 
         [FunctionName("get_sessions_list")]
+        [ProducesResponseType(typeof(List<SessionSummary>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetSessionsList(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route ="get_sessions_list/{clock_id}")]
             HttpRequest req,

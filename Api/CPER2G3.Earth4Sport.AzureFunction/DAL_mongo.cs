@@ -67,8 +67,6 @@ namespace CPER2G3.Earth4Sport.AzureFunction {
         }
         public async Task<ObjectResult> getSessionActivities(string sessionUuid, string clockUuid)
         {
-
-
             var collection = dbSessions.GetCollection<SessionData>(clockUuid);
             if (collection == null)
             {
@@ -76,7 +74,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction {
             }
             try
             {
-                var sessionCollection = collection.Find<SessionData>(s => s.SessionUUID == sessionUuid);
+                var sessionCollection = collection.Find<SessionData>(s => s.SessionUUID == sessionUuid).ToList();
                 if (sessionCollection == null)
                 {
                     return new NotFoundObjectResult("La sessione non esiste");
