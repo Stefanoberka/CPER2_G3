@@ -63,18 +63,27 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
             return await _dal.postClock(clockData, clock_id);
         }
 
+        [FunctionName("get_sessions_list")]
+        public async Task<IActionResult> GetSessionsList(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route ="get_sessions_list/{clock_id}")]
+            HttpRequest req,
+            ILogger log,
+            string clock_id
+            )
+        {
+            return await _dal.getSessionsList(clock_id);
+        }
         [FunctionName("get_session_data")]
         [ProducesResponseType(typeof(List<SessionData>), (int)HttpStatusCode.OK)]
-        [QueryStringParameter("session_id", "", DataType = typeof(string))]
-        [QueryStringParameter("clock_id", "", DataType = typeof(string))]
         public async Task<IActionResult> GetClockSession(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get")]
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route ="get_session_data/{clock_id}/{session_id}" )]
             HttpRequest req,
-            ILogger log
-            ) {
-            string s_id = req.Query["session_id"];
-            string c_id = req.Query["clock_id"];
-            return await _dal.getSessionActivities(s_id, c_id);
+            ILogger log,
+            string clock_id,
+            string session_id
+            )
+        {
+            return await _dal.getSessionActivities(session_id, clock_id);
         }
     }
 }

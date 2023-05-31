@@ -3,8 +3,27 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CPER2G3.Earth4Sport.AzureFunction.Models {
+    public class SessionSummary
+    {
+        public string Id { get; set; }
+        public DateTime Start {  get; set; }
+        public DateTime End { get; set; }
+        public double TotalDistance { get; set; }
+        public int TotalPools { get; set; }
+        public double AvgBpm { get; set; }
+        public SessionSummary(List<SessionData> data, string SessionId)
+        {
+            this.Id = SessionId;
+            this.Start = data.Select(d => d.TimeStamp).Min();
+            this.End = data.Select(d => d.TimeStamp).Max();
+            this.TotalDistance = data.Select(d => d.Distance).Max();
+            this.TotalPools = data.Select(d => d.Pools).Max();
+            this.AvgBpm = data.Select(d => d.Bpm).Average();
+        }
+    }
 
     public class SessionData {
         [BsonId]

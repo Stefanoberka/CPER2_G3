@@ -5,6 +5,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -42,21 +43,48 @@ namespace CPER2G3.Earth4Sport.AzureFunction {
         #endregion
 
         #region ClockSessions
-        public async Task<ObjectResult> getSessionActivities(string sessionUuid, string clockUuid) {
+        public async Task<ObjectResult> getSessionsList(string clockUuid)
+        {
+            var AllSessionsData = dbSessions.GetCollection<SessionData>(clockUuid);
+            if (AllSessionsData == null)
+            {
+                return new NotFoundObjectResult("Nessun dato.");
+            }
+            try
+            {
+                List<SessionSummary> res = new List<SessionSummary>();
+                foreach (var session in AllSessionsData.AsQueryable().Select(d => d.SessionUUID).Distinct().ToList())
+                {
+                    var data = AllSessionsData.Find(s => s.SessionUUID == session).ToList();
+                    res.Add(new SessionSummary(data, session));
+                }
+                return new ObjectResult(res);
+            }
+            catch (Exception)
+            {
+                return new ObjectResult("Errore");
+            }
+        }
+        public async Task<ObjectResult> getSessionActivities(string sessionUuid, string clockUuid)
+        {
 
 
             var collection = dbSessions.GetCollection<SessionData>(clockUuid);
-            if (collection == null) {
+            if (collection == null)
+            {
                 return new NotFoundObjectResult("L'orologio non esiste");
             }
-            try {
+            try
+            {
                 var sessionCollection = collection.Find<SessionData>(s => s.SessionUUID == sessionUuid);
-                if(sessionCollection == null) {
+                if (sessionCollection == null)
+                {
                     return new NotFoundObjectResult("La sessione non esiste");
                 }
                 return new ObjectResult(sessionCollection);
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 return new ObjectResult("Errore");
             }
         }
