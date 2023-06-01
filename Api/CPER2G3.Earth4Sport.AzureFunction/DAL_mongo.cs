@@ -101,6 +101,22 @@ namespace CPER2G3.Earth4Sport.AzureFunction {
                 return new BadRequestObjectResult("Errore");
             }
         }
+
+        public async Task<ObjectResult> getAllClocksIds()
+        {
+            var filter = Builders<DeviceData>.Filter.Empty;
+            var collection = dbProvisioning.GetCollection<DeviceData>("devices").Find(filter).ToList().Select(d => d.uuid);
+
+            return new OkObjectResult(collection);
+        }
+
+        public async Task<ObjectResult> getAllClocks()
+        {
+            var filter = Builders<DeviceData>.Filter.Empty;
+            var collection = dbProvisioning.GetCollection<DeviceData>("devices").Find(filter).ToList();
+
+            return new OkObjectResult(collection);
+        }
         #endregion
     }
 }
