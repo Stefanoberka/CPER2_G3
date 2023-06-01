@@ -14,7 +14,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Models {
         public double TotalDistance { get; set; }
         public int TotalPools { get; set; }
         public double AvgBpm { get; set; }
-        public SessionSummary(List<SessionData> data, string SessionId)
+        public SessionSummary(List<ActivityData> data, string SessionId)
         {
             this.Id = SessionId;
             this.Start = data.Select(d => d.TimeStamp).Min();
@@ -25,7 +25,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Models {
         }
     }
 
-    public class SessionData {
+    public class ActivityData {
         [BsonId]
         public ObjectId _id {  get; set; }
         [BsonElement("SessionUUID")]

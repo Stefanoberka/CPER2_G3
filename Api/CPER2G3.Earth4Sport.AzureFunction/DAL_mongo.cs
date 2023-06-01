@@ -45,7 +45,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction {
         #region ClockSessions
         public async Task<ObjectResult> getSessionsList(string clockUuid)
         {
-            var AllSessionsData = dbSessions.GetCollection<SessionData>(clockUuid);
+            var AllSessionsData = dbSessions.GetCollection<ActivityData>(clockUuid);
             if (AllSessionsData == null)
             {
                 return new NotFoundObjectResult("Nessun dato.");
@@ -67,14 +67,14 @@ namespace CPER2G3.Earth4Sport.AzureFunction {
         }
         public async Task<ObjectResult> getSessionActivities(string sessionUuid, string clockUuid)
         {
-            var collection = dbSessions.GetCollection<SessionData>(clockUuid);
+            var collection = dbSessions.GetCollection<ActivityData>(clockUuid);
             if (collection == null)
             {
                 return new NotFoundObjectResult("L'orologio non esiste");
             }
             try
             {
-                var sessionCollection = collection.Find<SessionData>(s => s.SessionUUID == sessionUuid).ToList();
+                var sessionCollection = collection.Find<ActivityData>(s => s.SessionUUID == sessionUuid).ToList();
                 if (sessionCollection == null)
                 {
                     return new NotFoundObjectResult("La sessione non esiste");
@@ -87,11 +87,11 @@ namespace CPER2G3.Earth4Sport.AzureFunction {
             }
         }
 
-        public async Task<ObjectResult> postClock(SessionData activity, string clockUuid) {
-            var collection = dbSessions.GetCollection<SessionData>(clockUuid);
+        public async Task<ObjectResult> postClock(ActivityData activity, string clockUuid) {
+            var collection = dbSessions.GetCollection<ActivityData>(clockUuid);
             if (collection == null) {
                 dbProvisioning.CreateCollection(clockUuid);
-                collection = dbSessions.GetCollection<SessionData>(clockUuid);
+                collection = dbSessions.GetCollection<ActivityData>(clockUuid);
             }
             try {
                 await collection.InsertOneAsync(activity);

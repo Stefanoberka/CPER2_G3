@@ -6,7 +6,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction {
     public interface IDAL {
         public Task<ObjectResult> getClockById(string uuid);
         public Task<ObjectResult> getSessionActivities(string sessionUuid, string clockUuid);
-        public Task<ObjectResult> postClock(SessionData activity, string clockUuid);
+        public Task<ObjectResult> postClock(ActivityData activity, string clockUuid);
         public Task<ObjectResult> getSessionsList(string clockUuid);
     }
 }

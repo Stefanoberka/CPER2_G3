@@ -21,7 +21,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
             _dal = dal;
         }
 
-        [FunctionName("get_device_data")]
+        [FunctionName("get_device_data")] 
         [ProducesResponseType(typeof(DeviceData), (int)HttpStatusCode.OK)]
         [QueryStringParameter("uuid", "", DataType = typeof(string))]
         public async Task<IActionResult> GetClockData(
@@ -48,7 +48,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
             }
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             Console.WriteLine(data.timestamp);
-            SessionData clockData = new SessionData() {
+            ActivityData clockData = new ActivityData() {
                 SessionUUID = data.sessionUUID,
                 Bpm = data.bpm,
                 Distance = data.distance,
@@ -75,7 +75,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
             return await _dal.getSessionsList(clock_id);
         }
         [FunctionName("get_session_data")]
-        [ProducesResponseType(typeof(List<SessionData>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(List<ActivityData>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetClockSession(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route ="get_session_data/{clock_id}/{session_id}" )]
             HttpRequest req,
