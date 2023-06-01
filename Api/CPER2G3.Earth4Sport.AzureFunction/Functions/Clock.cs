@@ -86,5 +86,22 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
         {
             return await _dal.getSessionActivities(session_id, clock_id);
         }
+
+        [FunctionName("get_all_clocks_ids")]
+        public async Task<IActionResult> GetAllClocksIds(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get")]
+            HttpRequest req
+            )
+        {
+            return await _dal.getAllClocksIds();
+        }
+        [FunctionName("get_all_clocks")]
+        public async Task<IActionResult> GetAllClocks(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get")]
+            HttpRequest req
+            )
+        {
+            return await _dal.getAllClocks();
+        }
     }
 }
