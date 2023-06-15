@@ -1,5 +1,5 @@
 const {MongoClient} = require('mongodb');
-const connstr = "mongodb://cper2g3:u71Y8f*1%40Y!v@99.80.67.24:27017"
+const connstr = process.env.MONGO
 let client = new MongoClient(connstr);
 
 
