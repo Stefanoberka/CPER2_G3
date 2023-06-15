@@ -23,25 +23,6 @@ namespace CPER2G3.Earth4Sport.AzureFunction {
             dbSessions = client.GetDatabase("sessions");
         }
 
-        #region Provisioning
-        public async Task<ObjectResult> getClockById(string uuid) {
-            var collection = dbProvisioning.GetCollection<BsonDocument>("devices");
-
-            var filter = Builders<BsonDocument>.Filter.Eq("_id", uuid);
-            try {
-                var document = collection.Find(filter).First();
-                return new OkObjectResult(new DeviceData() {
-                    uuid = document["_id"].AsString,
-                    n_batch = document["n_batch"].AsInt32,
-                    data_batch = DateTime.Parse(document["data_batch"].AsString)
-                });
-            }
-            catch (Exception) {
-                return new NotFoundObjectResult("L'id non esiste");
-            }
-        }
-        #endregion
-
         #region ClockSessions
         public async Task<ObjectResult> getSessionsList(string clockUuid)
         {
@@ -102,21 +83,6 @@ namespace CPER2G3.Earth4Sport.AzureFunction {
             }
         }
 
-        public async Task<ObjectResult> getAllClocksIds()
-        {
-            var filter = Builders<DeviceData>.Filter.Empty;
-            var collection = dbProvisioning.GetCollection<DeviceData>("devices").Find(filter).ToList().Select(d => d.uuid);
-
-            return new OkObjectResult(collection);
-        }
-
-        public async Task<ObjectResult> getAllClocks()
-        {
-            var filter = Builders<DeviceData>.Filter.Empty;
-            var collection = dbProvisioning.GetCollection<DeviceData>("devices").Find(filter).ToList();
-
-            return new OkObjectResult(collection);
-        }
         #endregion
     }
 }

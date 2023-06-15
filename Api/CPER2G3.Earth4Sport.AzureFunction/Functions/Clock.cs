@@ -21,19 +21,6 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
             _dal = dal;
         }
 
-        [FunctionName("get_device_data")] 
-        [ProducesResponseType(typeof(DeviceData), (int)HttpStatusCode.OK)]
-        [QueryStringParameter("uuid", "", DataType = typeof(string))]
-        public async Task<IActionResult> GetClockData(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get")]
-            HttpRequest req,
-            ILogger log
-            ){
-            log.LogInformation("C# HTTP trigger function processed a request.");
-            string uuid = req.Query["uuid"];
-            return await _dal.getClockById(uuid);
-        }
-
         [FunctionName("post_device_data")]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> PostClockActivity(
@@ -85,23 +72,6 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
             )
         {
             return await _dal.getSessionActivities(session_id, clock_id);
-        }
-
-        [FunctionName("get_all_clocks_ids")]
-        public async Task<IActionResult> GetAllClocksIds(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get")]
-            HttpRequest req
-            )
-        {
-            return await _dal.getAllClocksIds();
-        }
-        [FunctionName("get_all_clocks")]
-        public async Task<IActionResult> GetAllClocks(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get")]
-            HttpRequest req
-            )
-        {
-            return await _dal.getAllClocks();
         }
     }
 }

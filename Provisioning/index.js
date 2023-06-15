@@ -9,6 +9,12 @@ fastify.get('/clocks', async (req, res) => {
     return 
 })
 
+fastify.get('/clocks/ids', async (req, res) => {
+    var clocks = await fastify.provider.getAllClockIds()
+    res.send(clocks)
+    return 
+})
+
 fastify.get('/clocks/:uuid', async (req, res) =>{
     let id = req.params.uuid
     console.log(id)
