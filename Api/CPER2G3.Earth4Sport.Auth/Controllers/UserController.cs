@@ -15,14 +15,25 @@ namespace CPER2G3.Earth4Sport.Auth.Controllers
         }
 
 
-        [HttpPost(Name = "RegisterUser")]
-        [ProducesResponseType(201, Type = typeof(User))]
-        [ProducesResponseType(204, Type = typeof(User))]
-        public IActionResult Insert([FromBody] User user) {
+        [HttpPost("RegisterUser")]
+        //[ProducesResponseType(201, Type = typeof(User))]
+        //[ProducesResponseType(204, Type = typeof(User))]
+        public async Task<ObjectResult> Insert([FromBody] User user) {
             Console.WriteLine(user.Username);
             Console.WriteLine(user.Password);
-            _userService.Register(user);
-            return NoContent(); // 204
+            var pippo = await _userService.Register(user);
+            return new ObjectResult(pippo);
+
+        }
+
+        [HttpPost("LoginUser")]
+        //[ProducesResponseType(201, Type = typeof(User))]
+        //[ProducesResponseType(204, Type = typeof(User))]
+        public async Task<ObjectResult> Login([FromBody] User user) {
+            Console.WriteLine(user.Username);
+            Console.WriteLine(user.Password);
+            var ciao = await _userService.Login(user.Username, user.Password);
+            return new ObjectResult(ciao);
 
         }
     }

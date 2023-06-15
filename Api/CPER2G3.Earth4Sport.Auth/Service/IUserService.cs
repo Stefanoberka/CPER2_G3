@@ -2,7 +2,7 @@
 
 namespace CPER2G3.Earth4Sport.Auth.Service {
     public interface IUserService {
-        void Login(string username, string password);
-        void Register(User user);
+        Task<int> Login(string username, string password);
+        Task<string> Register(User user);
     }
 }
