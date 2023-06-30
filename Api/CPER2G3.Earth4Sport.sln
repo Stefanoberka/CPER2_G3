@@ -5,7 +5,7 @@ VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CPER2G3.Earth4Sport.AzureFunction", "CPER2G3.Earth4Sport.AzureFunction\CPER2G3.Earth4Sport.AzureFunction.csproj", "{D6395F34-6E5A-4A4D-A32C-8F3BE406E42A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CPER2G3.Earth4Sport.Auth", "CPER2G3.Earth4Sport.Auth\CPER2G3.Earth4Sport.Auth.csproj", "{1D3CEEA0-A6AF-456E-8E8C-F464A9D43A84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CPER2G3.Earth4Sport.Auth", "CPER2G3.Earth4Sport.Auth\CPER2G3.Earth4Sport.Auth.csproj", "{1D3CEEA0-A6AF-456E-8E8C-F464A9D43A84}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

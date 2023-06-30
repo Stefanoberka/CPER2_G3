@@ -1,5 +1,6 @@
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using CPER2G3.Earth4Sport.AzureFunction.Models;
+using CPER2G3.Earth4Sport.AzureFunction.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;

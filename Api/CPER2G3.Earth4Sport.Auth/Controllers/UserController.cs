@@ -19,8 +19,6 @@ namespace CPER2G3.Earth4Sport.Auth.Controllers
         //[ProducesResponseType(201, Type = typeof(User))]
         //[ProducesResponseType(204, Type = typeof(User))]
         public async Task<ObjectResult> Insert([FromBody] User user) {
-            Console.WriteLine(user.Username);
-            Console.WriteLine(user.Password);
             var pippo = await _userService.Register(user);
             return new ObjectResult(pippo);
 

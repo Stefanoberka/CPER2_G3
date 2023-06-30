@@ -5,7 +5,8 @@
     "FUNCTIONS_WORKER_RUNTIME": "dotnet"
   },
   "ConnectionStrings": {
-    "mongo": ""
+    "mongo": "",
+    "authdb":  ""
   },
   "Host": {
     "CORS": "*"

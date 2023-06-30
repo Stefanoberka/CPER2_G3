@@ -1,6 +1,7 @@
 ﻿using AzureFunctions.Extensions.Swashbuckle;
 using AzureFunctions.Extensions.Swashbuckle.Settings;
-using CPER2G3.Earth4Sport.AzureFunction;
+using CPER2G3.Earth4Sport.Auth.Service;
+using CPER2G3.Earth4Sport.AzureFunction.Service;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Azure.WebJobs.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,10 +10,12 @@ using System;
 using System.Reflection;
 
 [assembly: WebJobsStartup(typeof(CPER2G3.Earth4Sport.SwashbuckleStartup))]
-namespace CPER2G3.Earth4Sport {
+namespace CPER2G3.Earth4Sport
+{
     public class SwashbuckleStartup : FunctionsStartup {
         public override void Configure(IFunctionsHostBuilder builder) {
             builder.Services.AddSingleton<IDAL, DAL_mongo>();
+            builder.Services.AddSingleton<IUserService, UserService>();
             builder.AddSwashBuckle(Assembly.GetExecutingAssembly(), opts => {
                 opts.AddCodeParameter = true;
                 opts.PrependOperationWithRoutePrefix = true;

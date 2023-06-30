@@ -9,14 +9,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CPER2G3.Earth4Sport.AzureFunction {
-    public class DAL_mongo : IDAL {
+namespace CPER2G3.Earth4Sport.AzureFunction.Service
+{
+    public class DAL_mongo : IDAL
+    {
         private readonly string _connectionString;
         private MongoClient client;
         private IMongoDatabase dbProvisioning;
         private IMongoDatabase dbSessions;
 
-        public DAL_mongo(IConfiguration conf) {
+        public DAL_mongo(IConfiguration conf)
+        {
             _connectionString = conf.GetConnectionString("mongo");
             client = new MongoClient(_connectionString);
             dbProvisioning = client.GetDatabase("provisioning");
@@ -55,7 +58,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction {
             }
             try
             {
-                var sessionCollection = collection.Find<ActivityData>(s => s.SessionUUID == sessionUuid).ToList();
+                var sessionCollection = collection.Find(s => s.SessionUUID == sessionUuid).ToList();
                 if (sessionCollection == null)
                 {
                     return new NotFoundObjectResult("La sessione non esiste");
@@ -68,17 +71,21 @@ namespace CPER2G3.Earth4Sport.AzureFunction {
             }
         }
 
-        public async Task<ObjectResult> postClock(ActivityData activity, string clockUuid) {
+        public async Task<ObjectResult> postClock(ActivityData activity, string clockUuid)
+        {
             var collection = dbSessions.GetCollection<ActivityData>(clockUuid);
-            if (collection == null) {
+            if (collection == null)
+            {
                 dbProvisioning.CreateCollection(clockUuid);
                 collection = dbSessions.GetCollection<ActivityData>(clockUuid);
             }
-            try {
+            try
+            {
                 await collection.InsertOneAsync(activity);
                 return new OkObjectResult("Inserimento avvenuto".ToJson());
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 return new BadRequestObjectResult("Errore");
             }
         }
