@@ -9,8 +9,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using CPER2G3.Earth4Sport.AzureFunction.Models;
 using MongoDB.Driver;
-using CPER2G3.Earth4Sport.Auth.Service;
-using CPER2G3.Earth4Sport.Auth.Models;
+using CPER2G3.Earth4Sport.AzureFunction.Service;
 
 namespace CPER2G3.Earth4Sport.AzureFunction.Functions
 {
