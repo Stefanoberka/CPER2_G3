@@ -30,12 +30,12 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions {
                     requestBody = await streamReader.ReadToEndAsync();
                 }
                 dynamic data = JsonConvert.DeserializeObject(requestBody);
+                string clockUuid = data.uuid;
                 User user = new User() {
-                    ClockUuid = data.uuid,
                     Username = data.username,
                     Password = data.password,
                 };
-                var res = await _userService.Register(user);
+                var res = await _userService.Register(user, clockUuid);
                 return new OkObjectResult(res);
             }
             catch (Exception ex) {
