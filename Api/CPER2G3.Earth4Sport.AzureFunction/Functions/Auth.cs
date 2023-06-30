@@ -35,8 +35,8 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions {
                     Username = data.username,
                     Password = data.password,
                 };
-                var pippo = await _userService.Register(user);
-                return new OkObjectResult(pippo);
+                var res = await _userService.Register(user);
+                return new OkObjectResult(res);
             }
             catch (Exception ex) {
                 log.LogError(ex.Message);
@@ -59,8 +59,8 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions {
                 Username = data.username,
                 Password = data.password,
             };
-            var pippo = await _userService.Login(user.Username, user.Password);
-            return new OkObjectResult(pippo);
+            var res = await _userService.Login(user.Username, user.Password);
+            return new OkObjectResult(res);
 
         }
     }

@@ -15,8 +15,8 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Service {
             _connectionString = configuration.GetConnectionString("authdb");
         }
         public async Task<int> Login(string username, string password) {
-            var a = _mySHA256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            var encodedPwd = BitConverter.ToString(a).Replace("-", String.Empty);
+            var hash = _mySHA256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            var encodedPwd = BitConverter.ToString(hash).Replace("-", String.Empty);
             var query = @"USE [authdb]
                 SELECT [username]
                       ,[password]
@@ -24,8 +24,8 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Service {
                 WHERE username = @username AND password = @encodedPwd 
             "; var conn = new SqlConnection(_connectionString);
             conn.Open();
-            var ciao = await conn.QueryFirstOrDefaultAsync<User>(query, new { username, encodedPwd });
-            if(ciao == null) {
+            var res = await conn.QueryFirstOrDefaultAsync<User>(query, new { username, encodedPwd });
+            if(res == null) {
                 return 404;  
             }
             else {
@@ -35,8 +35,8 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Service {
         }
 
         public async Task<string> Register(User user) {
-            var a = _mySHA256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(user.Password));
-            var encodedPwd = BitConverter.ToString(a).Replace("-", String.Empty);
+            var hash = _mySHA256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(user.Password));
+            var encodedPwd = BitConverter.ToString(hash).Replace("-", String.Empty);
             string username = user.Username;
             string uuid = Guid.NewGuid().ToString();
             string clock_uuid = user.ClockUuid;
