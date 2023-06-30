@@ -17,7 +17,6 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Service {
         public async Task<int> Login(string username, string password) {
             var a = _mySHA256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             var encodedPwd = BitConverter.ToString(a).Replace("-", String.Empty);
-
             var query = @"USE [authdb]
                 SELECT [username]
                       ,[password]
@@ -39,7 +38,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Service {
             var a = _mySHA256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(user.Password));
             var encodedPwd = BitConverter.ToString(a).Replace("-", String.Empty);
             string username = user.Username;
-            string uuid = new Guid().ToString();
+            string uuid = Guid.NewGuid().ToString();
             string clock_uuid = user.ClockUuid;
             var query1 = @"USE [authdb]
                             INSERT INTO[dbo].[users]
@@ -59,7 +58,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Service {
                 return "ok";
             }
             catch(Exception e) {
-                return "Errore";
+                throw e;
             }
         }
     }
