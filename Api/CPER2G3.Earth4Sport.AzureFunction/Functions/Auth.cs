@@ -21,7 +21,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
         }
         [FunctionName("register")]
         public async Task<IActionResult> Insert(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
             ILogger log)
         {
             string requestBody = String.Empty;
@@ -30,6 +30,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
             }
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             User user = new User() {
+                ClockUuid = data.uuid,
                 Username = data.username,
                 Password = data.password,
             };
@@ -39,7 +40,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
 
         [FunctionName("login")]
         public async Task<IActionResult> Login(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
             ILogger log) {
             string requestBody = String.Empty;
             using (StreamReader streamReader = new StreamReader(req.Body)) {
@@ -47,6 +48,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
             }
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             User user = new User() {
+                ClockUuid = data.uuid,
                 Username = data.username,
                 Password = data.password,
             };

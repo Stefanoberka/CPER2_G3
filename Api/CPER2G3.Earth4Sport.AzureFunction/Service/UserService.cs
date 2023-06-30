@@ -39,16 +39,23 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Service {
             var a = _mySHA256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(user.Password));
             var encodedPwd = BitConverter.ToString(a).Replace("-", String.Empty);
             string username = user.Username;
-            
-            var query = @"USE [authdb]
+            string uuid = new Guid().ToString();
+            string clock_uuid = user.ClockUuid;
+            var query1 = @"USE [authdb]
                             INSERT INTO[dbo].[users]
-                                        ([username],[password])
+                                        ([uuid],[username],[password])
                         VALUES
-                            (@username, @encodedPwd)
-            "; var conn = new SqlConnection(_connectionString);
+                            (@uuid, @username, @encodedPwd)";
+            var query2 = @"USE [authdb]
+                            INSERT INTO[dbo].[users_clocks]
+                                        ([user_uuid],[clock_uuid])
+                        VALUES
+                            (@uuid, @clock_uuid)";
+            var conn = new SqlConnection(_connectionString);
             conn.Open();
             try {
-                await conn.ExecuteAsync(query, new { username, encodedPwd });
+                await conn.ExecuteAsync(query1, new {uuid, username, encodedPwd });
+                await conn.ExecuteAsync(query2, new { uuid, clock_uuid });
                 return "ok";
             }
             catch(Exception e) {
