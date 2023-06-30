@@ -10,11 +10,11 @@ using Newtonsoft.Json;
 using CPER2G3.Earth4Sport.AzureFunction.Models;
 using MongoDB.Driver;
 using CPER2G3.Earth4Sport.AzureFunction.Service;
+using Microsoft.VisualBasic;
+using System.Web.Http;
 
-namespace CPER2G3.Earth4Sport.AzureFunction.Functions
-{
-    public class Auth
-    {
+namespace CPER2G3.Earth4Sport.AzureFunction.Functions {
+    public class Auth {
         private IUserService _userService { get; set; }
         public Auth(IUserService userService) {
             _userService = userService;
@@ -22,20 +22,27 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
         [FunctionName("register")]
         public async Task<IActionResult> Insert(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
-            ILogger log)
-        {
-            string requestBody = String.Empty;
-            using (StreamReader streamReader = new StreamReader(req.Body)) {
-                requestBody = await streamReader.ReadToEndAsync();
+            ILogger log) {
+            try {
+
+                string requestBody = String.Empty;
+                using (StreamReader streamReader = new StreamReader(req.Body)) {
+                    requestBody = await streamReader.ReadToEndAsync();
+                }
+                dynamic data = JsonConvert.DeserializeObject(requestBody);
+                User user = new User() {
+                    ClockUuid = data.uuid,
+                    Username = data.username,
+                    Password = data.password,
+                };
+                var pippo = await _userService.Register(user);
+                return new OkObjectResult(pippo);
             }
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            User user = new User() {
-                ClockUuid = data.uuid,
-                Username = data.username,
-                Password = data.password,
-            };
-            var pippo = await _userService.Register(user);
-            return new OkObjectResult(pippo);
+            catch (Exception ex) {
+                log.LogError(ex.Message);
+                return new InternalServerErrorResult();
+
+            }
         }
 
         [FunctionName("login")]
@@ -54,6 +61,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
             };
             var pippo = await _userService.Login(user.Username, user.Password);
             return new OkObjectResult(pippo);
+
         }
     }
 }
