@@ -1,6 +1,6 @@
 ﻿using AzureFunctions.Extensions.Swashbuckle;
 using AzureFunctions.Extensions.Swashbuckle.Settings;
-using CPER2G3.Earth4Sport.Auth.Service;
+using CPER2G3.Earth4Sport.AzureFunction.Service;
 using CPER2G3.Earth4Sport.AzureFunction.Service;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Azure.WebJobs.Hosting;
