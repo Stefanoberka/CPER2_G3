@@ -14,7 +14,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Service {
         public UserService(IConfiguration configuration) {
             _connectionString = configuration.GetConnectionString("authdb");
         }
-        public async Task<int> Login(string username, string password) {
+        public async Task<Boolean> Login(string username, string password) {
             var hash = _mySHA256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             var encodedPwd = BitConverter.ToString(hash).Replace("-", String.Empty);
             var query = @"USE [authdb]
@@ -26,15 +26,15 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Service {
             conn.Open();
             var res = await conn.QueryFirstOrDefaultAsync<User>(query, new { username, encodedPwd });
             if(res == null) {
-                return 404;  
+                return false;  
             }
             else {
-                return 200;
+                return true;
             }
            
         }
 
-        public async Task<string> Register(User user, string clockUuid) {
+        public async Task<string> Register(User user, string clock_Uuid) {
             var hash = _mySHA256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(user.Password));
             var encodedPwd = BitConverter.ToString(hash).Replace("-", String.Empty);
             string username = user.Username;
@@ -54,7 +54,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Service {
             conn.Open();
             try {
                 await conn.ExecuteAsync(query1, new {uuid, username, encodedPwd });
-                await conn.ExecuteAsync(query2, new { uuid, clockUuid });
+                await conn.ExecuteAsync(query2, new { uuid, clock_Uuid });
                 return "ok";
             }
             catch(Exception e) {

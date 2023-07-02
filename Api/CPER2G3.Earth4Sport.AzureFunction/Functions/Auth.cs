@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using CPER2G3.Earth4Sport.AzureFunction.Models;
+using CPER2G3.Earth4Sport.AzureFunction.JwtUtils;
 using MongoDB.Driver;
 using CPER2G3.Earth4Sport.AzureFunction.Service;
 using Microsoft.VisualBasic;
@@ -55,12 +56,18 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions {
             }
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             User user = new User() {
-                ClockUuid = data.uuid,
                 Username = data.username,
                 Password = data.password,
             };
             var res = await _userService.Login(user.Username, user.Password);
-            return new OkObjectResult(res);
+            if (res) {
+                string token = JwtMethods.GenerateToken(user.Uuid);
+                log.LogInformation(token);
+                return new OkObjectResult(token);
+            }
+            else {
+                return new UnauthorizedObjectResult("Username e/o Password non validi!");
+            }
 
         }
     }

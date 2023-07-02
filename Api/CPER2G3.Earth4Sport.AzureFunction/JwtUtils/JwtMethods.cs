@@ -8,8 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CPER2G3.Earth4Sport.AzureFunction.JwtUtils {
-    public static class JwtUtils {
-        public static string GenerateToken(int userId) {
+    public static class JwtMethods {
+        public static string GenerateToken(string userId) {
             var mySecret = "asdv234234^&%&^%&^hjsdfb2%%%";
             var mySecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(mySecret));
 
@@ -20,7 +20,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction.JwtUtils {
             var tokenDescriptor = new SecurityTokenDescriptor {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-            new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+            new Claim(ClaimTypes.NameIdentifier, userId),
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 Issuer = myIssuer,

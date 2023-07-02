@@ -59,31 +59,23 @@ Assumiamo che, al momento della fabbricazione di ogni batch di orologi, il loro 
 
 Tabella dati orologio
 - guid orologio
-- guid sessione
-- reset (?)
-- userid (?)
+- userid
 
 Tabella attività
 - guid sessione
+- lista di attività {
 - guid attività
 - conteggio vasche
 - battiti
 - posizione (latitudine/longitudine)
 - timestamp
-- velocità
-- temperatura corporea
-- temperatura esterna
+- distanza percorsa
+}
 
-Tabella dati utente (?)
+Tabella dati utente
 - userid
-- nome
-- cognome
-- datan
-- codice fiscale
-- luogon
-- email
+- username
 - password
-- indirizzo casa
 
 ### db[azienda]
 Tabella orologio
