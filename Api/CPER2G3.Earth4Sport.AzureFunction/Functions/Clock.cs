@@ -1,4 +1,5 @@
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
+using CPER2G3.Earth4Sport.AzureFunction.JwtUtils;
 using CPER2G3.Earth4Sport.AzureFunction.Models;
 using CPER2G3.Earth4Sport.AzureFunction.Service;
 using Microsoft.AspNetCore.Http;
@@ -35,7 +36,11 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
                 requestBody = await streamReader.ReadToEndAsync();
             }
             dynamic data = JsonConvert.DeserializeObject(requestBody);
-            Console.WriteLine(data.timestamp);
+            req.Headers.TryGetValue("Bearer", out var token);
+            var isAuth = JwtMethods.ValidateCurrentToken(token);
+            if (!isAuth) {
+                return new UnauthorizedObjectResult(HttpStatusCode.Unauthorized);
+            }
             ActivityData clockData = new ActivityData() {
                 SessionUUID = data.sessionUUID,
                 Bpm = data.bpm,
@@ -58,8 +63,12 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
             HttpRequest req,
             ILogger log,
             string clock_id
-            )
-        {
+            ) {
+            req.Headers.TryGetValue("Bearer", out var token);
+            var isAuth = JwtMethods.ValidateCurrentToken(token);
+            if (!isAuth) {
+                return new UnauthorizedObjectResult(HttpStatusCode.Unauthorized);
+            }
             return await _dal.getSessionsList(clock_id);
         }
         [FunctionName("get_session_data")]
@@ -70,8 +79,12 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
             ILogger log,
             string clock_id,
             string session_id
-            )
-        {
+            ) {
+            req.Headers.TryGetValue("Bearer", out var token);
+            var isAuth = JwtMethods.ValidateCurrentToken(token);
+            if (!isAuth) {
+                return new UnauthorizedObjectResult(HttpStatusCode.Unauthorized);
+            }
             return await _dal.getSessionActivities(session_id, clock_id);
         }
     }

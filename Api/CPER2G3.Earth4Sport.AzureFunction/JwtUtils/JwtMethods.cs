@@ -10,18 +10,18 @@ using System.Threading.Tasks;
 namespace CPER2G3.Earth4Sport.AzureFunction.JwtUtils {
     public static class JwtMethods {
         public static string GenerateToken(string userId) {
-            var mySecret = "asdv234234^&%&^%&^hjsdfb2%%%";
+            var mySecret = "Vmware1!Vmware2?Vmware3;";
             var mySecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(mySecret));
 
             var myIssuer = "http://mysite.com";
             var myAudience = "http://myaudience.com";
 
             var tokenHandler = new JwtSecurityTokenHandler();
+            var claimsIdentity = new ClaimsIdentity(new Claim[]{
+                    new Claim(ClaimTypes.NameIdentifier,userId),
+                });
             var tokenDescriptor = new SecurityTokenDescriptor {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-            new Claim(ClaimTypes.NameIdentifier, userId),
-                }),
+                Subject = claimsIdentity,
                 Expires = DateTime.UtcNow.AddDays(7),
                 Issuer = myIssuer,
                 Audience = myAudience,
@@ -33,7 +33,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction.JwtUtils {
         }
 
         public static bool ValidateCurrentToken(string token) {
-            var mySecret = "asdv234234^&%&^%&^hjsdfb2%%%";
+            var mySecret = "Vmware1!Vmware2?Vmware3;";
             var mySecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(mySecret));
 
             var myIssuer = "http://mysite.com";

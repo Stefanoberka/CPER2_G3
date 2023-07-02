@@ -60,8 +60,8 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions {
                 Password = data.password,
             };
             var res = await _userService.Login(user.Username, user.Password);
-            if (res) {
-                string token = JwtMethods.GenerateToken(user.Uuid);
+            if (res.Authorized) {
+                string token = JwtMethods.GenerateToken(res.Uuid);
                 log.LogInformation(token);
                 return new OkObjectResult(token);
             }

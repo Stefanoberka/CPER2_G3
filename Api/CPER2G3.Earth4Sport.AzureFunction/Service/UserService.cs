@@ -14,23 +14,24 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Service {
         public UserService(IConfiguration configuration) {
             _connectionString = configuration.GetConnectionString("authdb");
         }
-        public async Task<Boolean> Login(string username, string password) {
+        public async Task<LoginResponse> Login(string username, string password) {
             var hash = _mySHA256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             var encodedPwd = BitConverter.ToString(hash).Replace("-", String.Empty);
             var query = @"USE [authdb]
-                SELECT [username]
+                SELECT [uuid],
+                        [username]
                       ,[password]
                   FROM [dbo].[users]
                 WHERE username = @username AND password = @encodedPwd 
             "; var conn = new SqlConnection(_connectionString);
             conn.Open();
             var res = await conn.QueryFirstOrDefaultAsync<User>(query, new { username, encodedPwd });
-            if(res == null) {
-                return false;  
-            }
-            else {
-                return true;
-            }
+
+            return new LoginResponse() {
+                Authorized = (res != null),
+                Uuid = res != null ? res.Uuid : ""
+            };  
+
            
         }
 
