@@ -1,39 +1,16 @@
-var fastify = require('fastify')();
-fastify.decorate('provider', require('./mongo.js'))
+const fs = require('fs')
+const path = require('path')
+const scripsList = fs.readdirSync('./scripts').map(file => file.replace('.js', ''))
 
-
-fastify.get('/clocks', async (req, res) => {
-    var clocks = await fastify.provider.getClocks()
-    res.send(clocks)
-    return res
-})
-
-fastify.get('/clocks/ids', async (req, res) => {
-    var clocks = await fastify.provider.getAllClockIds()
-    res.send(clocks)
-    return res
-})
-
-fastify.get('/clocks/:uuid', async (req, res) =>{
-    let id = req.params.uuid
-    console.log(id)
-    var clock = await fastify.provider.getClockByUuid(id)
-    console.log(clock)
-    res.send(clock)
-    return res
-})
-
-
-async function run() {
-    try {
-        var port = 6969
-        await fastify.listen( {port}, () => {
-            console.log(fastify.printRoutes())
-        })
-        console.log(`Server running on port ${port}`)
-    } catch (error) {
-        console.log('error', error)
+const main = async () => {
+    const arg = process.argv[2]
+    if (!scripsList.includes(arg)) {
+        console.log('script not found');
+    }
+    else {
+        const {f} = require(path.join(__dirname, `scripts/${arg}.js`));
+        f();
     }
 }
 
-run()
+main()
