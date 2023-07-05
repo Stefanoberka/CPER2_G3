@@ -56,5 +56,12 @@ namespace CPER2G3.Earth4Sport.AzureFunction.JwtUtils {
             return true;
         }
 
+        public static string GetTokenUserId(string token) {
+            var handler = new JwtSecurityTokenHandler();
+            var content = handler.ReadJwtToken(token);
+            var nameid = content.Claims.FirstOrDefault(c => c.Type == "nameid").Value;
+            return nameid;
+        }
+
     }
 }

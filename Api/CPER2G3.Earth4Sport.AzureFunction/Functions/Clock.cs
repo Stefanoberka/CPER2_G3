@@ -93,16 +93,16 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
         [FunctionName("user_clocks")]
         [ProducesResponseType(typeof(List<string>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetUserClocks(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route ="user_clocks/{user_id}" )]
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route ="user_clocks" )]
             HttpRequest req,
-            ILogger log,
-            string user_id
+            ILogger log
             ) {
             req.Headers.TryGetValue("Bearer", out var token);
             var isAuth = JwtMethods.ValidateCurrentToken(token);
             if (!isAuth) {
                 return new UnauthorizedObjectResult(HttpStatusCode.Unauthorized);
             }
+            string user_id = JwtMethods.GetTokenUserId(token);
             var clocks = await _userService.UserClocks(user_id);
             if(clocks == null ) {
                 return new NotFoundObjectResult(HttpStatusCode.NotFound);
