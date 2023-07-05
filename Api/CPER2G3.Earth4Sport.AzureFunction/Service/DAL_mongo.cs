@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace CPER2G3.Earth4Sport.AzureFunction.Service
 {
@@ -37,16 +38,18 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Service
             try
             {
                 List<SessionSummary> res = new List<SessionSummary>();
-                foreach (var session in AllSessionsData.AsQueryable().Select(d => d.SessionUUID).Distinct().ToList())
+                var sessionList = AllSessionsData.AsQueryable().Select(d => d.SessionUUID).Distinct().ToList();
+                foreach (var session in sessionList)
                 {
                     var data = AllSessionsData.Find(s => s.SessionUUID == session).ToList();
                     res.Add(new SessionSummary(data, session));
                 }
+                res.OrderByDescending(s => s.Start);
                 return new ObjectResult(res);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return new ObjectResult("Errore");
+                return new ObjectResult(e.Message);
             }
         }
         public async Task<ObjectResult> getSessionActivities(string sessionUuid, string clockUuid)
@@ -59,15 +62,17 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Service
             try
             {
                 var sessionCollection = collection.Find(s => s.SessionUUID == sessionUuid).ToList();
+
+                sessionCollection.OrderByDescending(s => s.TimeStamp);
                 if (sessionCollection == null)
                 {
                     return new NotFoundObjectResult("La sessione non esiste");
                 }
                 return new ObjectResult(sessionCollection);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return new ObjectResult("Errore");
+                return new ObjectResult(e.Message);
             }
         }
 
