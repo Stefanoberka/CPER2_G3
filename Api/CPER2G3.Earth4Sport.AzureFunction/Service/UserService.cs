@@ -6,6 +6,8 @@ using Dapper;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CPER2G3.Earth4Sport.AzureFunction.Service {
     public class UserService : IUserService {
@@ -23,7 +25,8 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Service {
                       ,[password]
                   FROM [dbo].[users]
                 WHERE username = @username AND password = @encodedPwd 
-            "; var conn = new SqlConnection(_connectionString);
+            "; 
+            var conn = new SqlConnection(_connectionString);
             conn.Open();
             var res = await conn.QueryFirstOrDefaultAsync<User>(query, new { username, encodedPwd });
 
@@ -61,6 +64,18 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Service {
             catch(Exception e) {
                 throw e;
             }
+        }
+
+        public async Task<List<string>> UserClocks(string userId) {
+            var query = @"USE [authdb]
+                SELECT [clock_uuid]
+                  FROM [dbo].[users_clocks]
+                WHERE [user_uuid] = @userId
+            ";
+            var conn = new SqlConnection(_connectionString);
+            conn.Open();
+            var res = await conn.QueryAsync<string>(query, new { userId });
+            return res.ToList();
         }
     }
 }
