@@ -29,7 +29,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> PostClockActivity(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "device_data/{clock_id}")]
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "device_data/{clock_id}")]
             HttpRequest req,
             string clock_id,
             ILogger log
@@ -39,11 +39,6 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
                 requestBody = await streamReader.ReadToEndAsync();
             }
             dynamic data = JsonConvert.DeserializeObject(requestBody);
-            req.Headers.TryGetValue("Bearer", out var token);
-            var isAuth = JwtMethods.ValidateCurrentToken(token);
-            if (!isAuth) {
-                return new UnauthorizedObjectResult("Non sei autenticato!");
-            }
             ActivityData clockData = new ActivityData() {
                 SessionUUID = data.sessionUUID,
                 Bpm = data.bpm,
@@ -103,12 +98,12 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
             req.Headers.TryGetValue("Bearer", out var token);
             var isAuth = JwtMethods.ValidateCurrentToken(token);
             if (!isAuth) {
-                return new UnauthorizedObjectResult(HttpStatusCode.Unauthorized);
+                return new UnauthorizedObjectResult("Non sei autenticato!");
             }
             string user_id = JwtMethods.GetTokenUserId(token);
             var clocks = await _userService.UserClocks(user_id);
             if(clocks == null ) {
-                return new NotFoundObjectResult(HttpStatusCode.NotFound);
+                return new NotFoundObjectResult("Nessun orologio trovato!");
             }
             return new OkObjectResult(clocks);
         }
