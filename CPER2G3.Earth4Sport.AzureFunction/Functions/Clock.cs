@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
@@ -20,9 +21,12 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
     {
         private IDAL _dal { get; set; }
         private IUserService _userService { get; set; }
-        public Clock(IDAL dal, IUserService userService) {
+        private JwtMethods _jwtMethods { get; set; }
+        public Clock(IDAL dal, IUserService userService, IConfiguration conf)
+        {
             _dal = dal;
             _userService = userService;
+            _jwtMethods = new JwtMethods(conf);
         }
 
         [FunctionName("device_data")]
@@ -33,18 +37,22 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
             HttpRequest req,
             string clock_id,
             ILogger log
-            ) {
+            )
+        {
             string requestBody = String.Empty;
-            using (StreamReader streamReader = new StreamReader(req.Body)) {
+            using (StreamReader streamReader = new StreamReader(req.Body))
+            {
                 requestBody = await streamReader.ReadToEndAsync();
             }
             dynamic data = JsonConvert.DeserializeObject(requestBody);
-            ActivityData clockData = new ActivityData() {
+            ActivityData clockData = new ActivityData()
+            {
                 SessionUUID = data.sessionUUID,
                 Bpm = data.bpm,
                 Distance = data.distance,
                 Pools = data.pools,
-                Gps = new Gps() {
+                Gps = new Gps()
+                {
                     latitude = data.gps.latitude,
                     longitude = data.gps.longitude,
                 },
@@ -62,10 +70,12 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
             HttpRequest req,
             ILogger log,
             string clock_id
-            ) {
+            )
+        {
             req.Headers.TryGetValue("Bearer", out var token);
-            var isAuth = JwtMethods.ValidateCurrentToken(token);
-            if (!isAuth) {
+            var isAuth = _jwtMethods.ValidateCurrentToken(token);
+            if (!isAuth)
+            {
                 return new UnauthorizedObjectResult("Non sei autenticato!");
             }
             return await _dal.getSessionsList(clock_id);
@@ -79,10 +89,12 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
             ILogger log,
             string clock_id,
             string session_id
-            ) {
+            )
+        {
             req.Headers.TryGetValue("Bearer", out var token);
-            var isAuth = JwtMethods.ValidateCurrentToken(token);
-            if (!isAuth) {
+            var isAuth = _jwtMethods.ValidateCurrentToken(token);
+            if (!isAuth)
+            {
                 return new UnauthorizedObjectResult("Non sei autenticato!");
             }
             return await _dal.getSessionActivities(session_id, clock_id);
@@ -94,15 +106,18 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "user_clocks" )]
             HttpRequest req,
             ILogger log
-            ) {
+            )
+        {
             req.Headers.TryGetValue("Bearer", out var token);
-            var isAuth = JwtMethods.ValidateCurrentToken(token);
-            if (!isAuth) {
+            var isAuth = _jwtMethods.ValidateCurrentToken(token);
+            if (!isAuth)
+            {
                 return new UnauthorizedObjectResult("Non sei autenticato!");
             }
-            string user_id = JwtMethods.GetTokenUserId(token);
+            string user_id = _jwtMethods.GetTokenUserId(token);
             var clocks = await _userService.UserClocks(user_id);
-            if(clocks == null ) {
+            if (clocks == null)
+            {
                 return new NotFoundObjectResult("Nessun orologio trovato!");
             }
             return new OkObjectResult(clocks);

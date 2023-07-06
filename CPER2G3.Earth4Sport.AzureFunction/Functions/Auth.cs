@@ -13,12 +13,15 @@ using MongoDB.Driver;
 using CPER2G3.Earth4Sport.AzureFunction.Service;
 using Microsoft.VisualBasic;
 using System.Web.Http;
+using Microsoft.Extensions.Configuration;
 
 namespace CPER2G3.Earth4Sport.AzureFunction.Functions {
     public class Auth {
         private IUserService _userService { get; set; }
-        public Auth(IUserService userService) {
+        private JwtMethods _jwtMethods { get; set; }
+        public Auth(IUserService userService, IConfiguration conf) {
             _userService = userService;
+            _jwtMethods = new JwtMethods(conf);
         }
         [FunctionName("register")]
         public async Task<IActionResult> Insert(
@@ -61,7 +64,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions {
             };
             var res = await _userService.Login(user.Username, user.Password);
             if (res.Authorized) {
-                string token = JwtMethods.GenerateToken(res.Uuid);
+                string token = _jwtMethods.GenerateToken(res.Uuid);
                 log.LogInformation(token);
                 return new OkObjectResult(token);
             }
