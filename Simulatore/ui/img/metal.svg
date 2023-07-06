@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:svgjs="http://svgjs.com/svgjs" width="140" height="140" preserveAspectRatio="none"
+    viewBox="0 0 140 140">
+    <g mask="url(&quot;#SvgjsMask1529&quot;)" fill="none">
+        <rect width="140" height="140" x="0" y="0" fill="url(#SvgjsRadialGradient1530)"></rect>
+        <path d="M140 0L108.25 0L140 22.85z" fill="rgba(255, 255, 255, .1)"></path>
+        <path d="M108.25 0L140 22.85L140 23.720000000000002L72.52000000000001 0z"
+            fill="rgba(255, 255, 255, .075)"></path>
+        <path d="M72.52000000000001 0L140 23.720000000000002L140 51.02L53.000000000000014 0z"
+            fill="rgba(255, 255, 255, .05)"></path>
+        <path d="M53.000000000000014 0L140 51.02L140 87.86000000000001L38.45000000000002 0z"
+            fill="rgba(255, 255, 255, .025)"></path>
+        <path d="M0 140L18.38 140L0 93.61z" fill="rgba(0, 0, 0, .1)"></path>
+        <path d="M0 93.61L18.38 140L53.44 140L0 73.05z" fill="rgba(0, 0, 0, .075)"></path>
+        <path d="M0 73.05L53.44 140L60.629999999999995 140L0 43.58z" fill="rgba(0, 0, 0, .05)"></path>
+        <path d="M0 43.58L60.629999999999995 140L71.42999999999999 140L0 22.36z"
+            fill="rgba(0, 0, 0, .025)"></path>
+    </g>
+    <defs>
+        <mask id="SvgjsMask1529">
+            <rect width="140" height="140" fill="#ffffff"></rect>
+        </mask>
+        <radialGradient cx="50%" cy="50%" r="98.99" gradientUnits="userSpaceOnUse"
+            id="SvgjsRadialGradient1530">
+            <stop stop-color="rgba(14, 42, 71, 1)" offset="0"></stop>
+            <stop stop-color="rgba(202, 202, 202, 1)" offset="1"></stop>
+        </radialGradient>
+    </defs>
+</svg>

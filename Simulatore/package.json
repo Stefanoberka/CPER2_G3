@@ -1,0 +1,17 @@
+{
+  "name": "simulatore",
+  "version": "0.0.1-alpha",
+  "description": "orologio fasullo non impermeabile",
+  "main": "electronApp.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "author": "Federico Mattiuzzi",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "electron": "^24.3.0",
+    "uuid": "^9.0.0"
+  }
+}

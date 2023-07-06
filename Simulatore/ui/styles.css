@@ -1,0 +1,253 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.draggable-area {
+    -webkit-app-region: drag;
+}
+
+.button{
+    height: 30px;
+    width: 30px;
+    border: 0;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    color: #FFFFFF;
+    cursor: pointer;
+    outline: transparent;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+
+}
+.close {
+    background: #aa0000;
+}
+
+.min {
+    background: #0000aa;
+}
+
+.background2 {
+    height: 350px;
+    width: 550px;
+    background-image: url('./img/waves.svg');
+    background-repeat: repeat-y;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    border: 1.5px solid #02a6f2;
+    box-shadow: rgba(2, 166, 242, 0.4) -5px 5px, rgba(2, 166, 242, 0.3) -10px 10px, rgba(2, 166, 242, 0.2) -15px 15px, rgba(2, 166, 242, 0.1) -20px 20px, rgba(2, 166, 242, 0.05) -25px 25px;
+}
+
+.gradient {
+    background: linear-gradient(-45deg, #eeeeff8c, #74efff8c, #0000ff8c);
+    background-size: 400% 400%;
+    animation: wave-gradient 5s ease infinite;
+    border-radius: 15px;
+}
+
+@keyframes wave-gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.wrist {
+    background-color: #e0ac69;
+    width: 250px;
+    height: 200px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
+}
+
+.strap {
+    background: linear-gradient(90deg, rgba(0, 66, 118, 1) 0%, rgba(23, 43, 75, 1) 85%);
+    box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 1px, rgba(0, 0, 0, 0.07) 0px 2px 2px, rgba(0, 0, 0, 0.07) 0px 4px 4px, rgba(0, 0, 0, 0.07) 0px 8px 8px, rgba(0, 0, 0, 0.07) 0px 16px 16px;
+    width: 120px;
+    height: 200px;
+    margin-left: 70px;
+}
+
+.watchface {
+    z-index: 1;
+    position: relative;
+    left: -10px;
+    top: 30px;
+    background-color: white;
+    background-image: url('./img/metal.svg');
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    background-repeat: repeat;
+    width: 140px;
+    height: 140px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.palm {
+    background-color: #e0ac69;
+    width: 250px;
+    height: 240px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-end;
+    box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
+}
+
+.f {
+    z-index: 1;
+    position: relative;
+    left: 20px;
+    background-color: #e0ac69;
+    width: 60px;
+    height: 60px;
+    border-radius: 25px;
+}
+
+.thumb {
+    background-color: #e0ac69;
+    width: 200px;
+    height: 80px;
+    border-radius: 30px;
+    position: absolute;
+    top: 284px;
+    left: 292px;
+    z-index: 0;
+    box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
+}
+
+.line {
+    background-color: #000000;
+    box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
+    height: 1px;
+    width: 120px;
+    position: relative;
+    top: 55px;
+    left: 80px;
+}
+
+.glass {
+    z-index: 1;
+    -webkit-app-region: no-drag;
+    background-image: url('./img/glass.svg');
+    width: 124px;
+    height: 118px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 100px;
+    height: 40px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #f55;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 30px;
+    width: 40px;
+    left: 5px;
+    top: 5px;
+    background-color: #fff;
+    /* content: "Stopped."; */
+    font-size: 10px;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+
+input[type="checkbox"]:checked+.slider {
+    background-color: #2196F3;
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input[type="checkbox"]:checked+.slider:before {
+    transform: translateX(50px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 5px;
+}
+
+.slider.round:before {
+    border-radius: 5px;
+}
+
+#on {
+    display: none;
+}
+
+#on,
+#off {
+    color: white;
+    font-size: 14px;
+    font-family: Verdana, sans-serif;
+    margin-top: 0px;
+}
+
+input[type="checkbox"]:checked+.slider #on {
+    display: block;
+}
+
+input[type="checkbox"]:checked+.slider #off {
+    display: none;
+}

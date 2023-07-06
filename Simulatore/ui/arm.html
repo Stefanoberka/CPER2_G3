@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <title>Earth4sporT</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="row">
+        <button id="minBtn" type="button" class="button min">-</button>
+        <button id="closeBtn" type="button" class="button close">X</button>
+    </div>
+
+    <div class="gradient">
+        <div class="background2 draggable-area">
+            <div class="wrist">
+                <div class="strap">
+                    <div class="watchface">
+                        <div class="glass">
+                            <p id="off">Stopped.</p>
+                            <p id="on">Swimming...</p>
+                            <label class="switch">
+                                <input type="checkbox" id="toggle" onclick="">
+                                <div class="slider round"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="palm">
+                <div class="f"></div>
+                <div class="f"></div>
+                <div class="f"></div>
+                <div class="f"></div>
+            </div>
+        </div>
+        <div class="thumb">
+            <div class="line"></div>
+        </div>
+    </div>
+    <script src="./renderer.js"></script>
+</body>
+
+</html>
