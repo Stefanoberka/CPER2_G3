@@ -3,18 +3,19 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CPER2G3.Earth4Sport.AzureFunction.JwtUtils {
     public static class JwtMethods {
+        private readonly static string _mySecret = "Vmware1!Vmware2?Vmware3;";
+        private readonly static SymmetricSecurityKey mySecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_mySecret));
+        private readonly static string _myIssuer = "https://www.cper2g3.com";
+        private readonly static string _myAudience = "https://www.earth4sport.com";
         public static string GenerateToken(string userId) {
-            var mySecret = "Vmware1!Vmware2?Vmware3;";
-            var mySecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(mySecret));
 
-            var myIssuer = "http://mysite.com";
-            var myAudience = "http://myaudience.com";
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var claimsIdentity = new ClaimsIdentity(new Claim[]{
@@ -23,8 +24,8 @@ namespace CPER2G3.Earth4Sport.AzureFunction.JwtUtils {
             var tokenDescriptor = new SecurityTokenDescriptor {
                 Subject = claimsIdentity,
                 Expires = DateTime.UtcNow.AddDays(7),
-                Issuer = myIssuer,
-                Audience = myAudience,
+                Issuer = _myIssuer,
+                Audience = _myAudience,
                 SigningCredentials = new SigningCredentials(mySecurityKey, SecurityAlgorithms.HmacSha256Signature)
             };
 
@@ -33,20 +34,14 @@ namespace CPER2G3.Earth4Sport.AzureFunction.JwtUtils {
         }
 
         public static bool ValidateCurrentToken(string token) {
-            var mySecret = "Vmware1!Vmware2?Vmware3;";
-            var mySecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(mySecret));
-
-            var myIssuer = "http://mysite.com";
-            var myAudience = "http://myaudience.com";
-
             var tokenHandler = new JwtSecurityTokenHandler();
             try {
                 tokenHandler.ValidateToken(token, new TokenValidationParameters {
                     ValidateIssuerSigningKey = true,
                     ValidateIssuer = true,
                     ValidateAudience = true,
-                    ValidIssuer = myIssuer,
-                    ValidAudience = myAudience,
+                    ValidIssuer = _myIssuer,
+                    ValidAudience = _myAudience,
                     IssuerSigningKey = mySecurityKey
                 }, out SecurityToken validatedToken);
             }

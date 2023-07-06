@@ -27,6 +27,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
 
         [FunctionName("device_data")]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> PostClockActivity(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "device_data/{clock_id}")]
             HttpRequest req,
@@ -41,7 +42,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
             req.Headers.TryGetValue("Bearer", out var token);
             var isAuth = JwtMethods.ValidateCurrentToken(token);
             if (!isAuth) {
-                return new UnauthorizedObjectResult(HttpStatusCode.Unauthorized);
+                return new UnauthorizedObjectResult("Non sei autenticato!");
             }
             ActivityData clockData = new ActivityData() {
                 SessionUUID = data.sessionUUID,
@@ -60,6 +61,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
 
         [FunctionName("sessions_list")]
         [ProducesResponseType(typeof(List<SessionSummary>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> GetSessionsList(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route ="sessions_list/{clock_id}")]
             HttpRequest req,
@@ -69,12 +71,13 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
             req.Headers.TryGetValue("Bearer", out var token);
             var isAuth = JwtMethods.ValidateCurrentToken(token);
             if (!isAuth) {
-                return new UnauthorizedObjectResult(HttpStatusCode.Unauthorized);
+                return new UnauthorizedObjectResult("Non sei autenticato!");
             }
             return await _dal.getSessionsList(clock_id);
         }
         [FunctionName("session_data")]
         [ProducesResponseType(typeof(List<ActivityData>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> GetClockSession(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route ="session_data/{clock_id}/{session_id}" )]
             HttpRequest req,
@@ -85,7 +88,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
             req.Headers.TryGetValue("Bearer", out var token);
             var isAuth = JwtMethods.ValidateCurrentToken(token);
             if (!isAuth) {
-                return new UnauthorizedObjectResult(HttpStatusCode.Unauthorized);
+                return new UnauthorizedObjectResult("Non sei autenticato!");
             }
             return await _dal.getSessionActivities(session_id, clock_id);
         }
@@ -93,7 +96,7 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Functions
         [FunctionName("user_clocks")]
         [ProducesResponseType(typeof(List<string>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetUserClocks(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route ="user_clocks" )]
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "user_clocks" )]
             HttpRequest req,
             ILogger log
             ) {
