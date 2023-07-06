@@ -21,6 +21,9 @@ class Data {
     update() {
         // aggiorno i BPM:
         this.bpm = randomNumberBetween(80, 120);
+        if (Math.random() < 0.15)
+            this.bpm = -this.bpm
+
 
         // salvo temporaneamente la posizione attuale per poter calcolare la distanza da quella nuova:
         let prevLat = this.gps.latitude;
