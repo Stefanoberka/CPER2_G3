@@ -42,7 +42,11 @@ namespace CPER2G3.Earth4Sport.AzureFunction.Service
                 foreach (var session in sessionList)
                 {
                     var data = AllSessionsData.Find(s => s.SessionUUID == session).ToList();
-                    res.Add(new SessionSummary(data, session));
+                    SessionSummary summary = new SessionSummary(data, session);
+                    if (summary.TotalDistance != 0)
+                    {
+                        res.Add(summary);
+                    }
                 }
                 res.OrderByDescending(s => s.Start);
                 return new ObjectResult(res);
